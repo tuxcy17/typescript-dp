@@ -1,0 +1,26 @@
+{
+  "name": "typescript-dp",
+  "version": "1.0.0",
+  "description": "Some design pattern express in Typescript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "alsatian --tap \"./dist/out-tsc/test/test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuxcy17/typescript-dp.git"
+  },
+  "author": "tuxcy17@CR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tuxcy17/typescript-dp/issues"
+  },
+  "homepage": "https://github.com/tuxcy17/typescript-dp#readme",
+  "dependencies": {
+    "alsatian": "^2.0.0",
+    "codelyzer": "^3.2.0",
+    "moment": "^2.18.1",
+    "typescript": "~2.3.3",
+    "underscore": "^1.8.3"
+  }
+}

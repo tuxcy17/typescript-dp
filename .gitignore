@@ -1,0 +1,10 @@
+
+\.idea/
+
+node_modules/
+
+dist/
+
+src/main\.ts
+
+yarn-error\.log
