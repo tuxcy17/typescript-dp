@@ -1,7 +1,7 @@
 abstract class Image {
     protected filename: string;
 
-    public abstract displayImage(): void ;
+    public abstract displayImage(): boolean ;
 }
 
 class RealImage extends Image {
@@ -16,8 +16,9 @@ class RealImage extends Image {
         console.log('Chargement de ' + this.filename);
     }
 
-    public displayImage(): void {
+    public displayImage(): boolean {
         console.log('Affichage de  ' + this.filename);
+        return true;
     }
 }
 
@@ -29,11 +30,12 @@ class ProxyImage extends Image {
         this.filename = filename;
     }
 
-    public displayImage(): void {
+    public displayImage(): boolean {
         if (this.image == null) {
             this.image = new RealImage(this.filename); // Chargement sur demande seulement
         }
         this.image.displayImage();
+        return true;
     }
 }
 
