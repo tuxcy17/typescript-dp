@@ -11,6 +11,8 @@ import {
     ChainLogger, EmailLogger, Level, QueryLogger, StderrLogger,
     StdoutLogger
 } from '../src/ChainOfResponsability/ChainOfResponsability';
+import {Animal, AnimalFactory, AnimalType} from '../src/Factory/Factory';
+import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactoryImpl';
 // import moment = require('moment');
 
 @TestFixture('Design Pattern')
@@ -30,7 +32,7 @@ export class DesignPatternTest {
 
     @TestCase()
     @Test('#Proxy')
-    public factoryTest() {
+    public proxyTest() {
         const image1: Image = new ProxyImage('HiRes_10MB_Photo1');
         const image2: Image = new ProxyImage('HiRes_10MB_Photo2');
 
@@ -43,6 +45,17 @@ export class DesignPatternTest {
     public singletonTest(testString: string) {
         Expect(SingletonClass.getInstance().mirror(testString)).toBe(testString);
     }
+
+    @TestCase()
+    @Test('#Factory')
+    public factoryTest() {
+        const animalFactory: AnimalFactory = AnimalFactory.getInstance();
+        const dog: Animal = animalFactory.getAnimal(AnimalType.DOG);
+        const cat: Animal = animalFactory.getAnimal(AnimalType.CAT);
+        const res = [dog.constructor.name, cat.constructor.name];
+        Expect(true).toBe(_.isEqual(['Dog', 'Cat'], res));
+    }
+
 
     @Test('#Decorator')
     public decoratorTest () {
@@ -70,6 +83,14 @@ export class DesignPatternTest {
         subject.notifyObservers();
         subject.setSubjectState('NEW');
         Expect(subject.notifyObservers()).toEqual(['NEW', 'NEW', 'NEW']);
+    }
+
+    @TestCase()
+    @Test('#Abstract Factory')
+    public abstractFactoryTest() {
+        const guiFactory: GuiFactory = GuiFactory.getFactory(TypeOS.OSX);
+        const button: Button = guiFactory.createButton();
+        Expect(true).toEqual(guiFactory.constructor.name === 'OSXFactory');
     }
 
     @TestCase()
