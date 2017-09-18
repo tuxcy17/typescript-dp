@@ -1,12 +1,16 @@
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import {Setup, Teardown, Test, TestCase, TestFixture, Expect} from 'alsatian';
+import {Setup, Teardown, Test, TestCase, TestFixture, Expect, AsyncTest} from 'alsatian';
 import {Image, ProxyImage} from '../src/Proxy/Proxy';
 import {SingletonClass} from '../src/Singleton/Singleton';
 import {CircleShape, DrawingAPI1, Shape, DrawingAPI2} from '../src/Bridge/Bridge';
 import {HorizontalScrollBarDecorator, SimpleTable, Table, VerticalScrollBarDecorator} from '../src/Decorator/Decorator';
 import {ConcreteSubject} from '../src/Observer/Subject';
 import {ConcreteObserver} from '../src/Observer/Observer';
+import {
+    ChainLogger, EmailLogger, Level, QueryLogger, StderrLogger,
+    StdoutLogger
+} from '../src/ChainOfResponsability/ChainOfResponsability';
 // import moment = require('moment');
 
 @TestFixture('Design Pattern')
@@ -66,6 +70,32 @@ export class DesignPatternTest {
         subject.notifyObservers();
         subject.setSubjectState('NEW');
         Expect(subject.notifyObservers()).toEqual(['NEW', 'NEW', 'NEW']);
+    }
+
+    @TestCase()
+    @AsyncTest('#chainOfResponsability ? Async chain of responsability with returning state for eache promise')
+    public chainOfResponsabilityTest() {
+        const chain: ChainLogger<QueryLogger> = new ChainLogger<QueryLogger>();
+
+        chain.addChain(new StdoutLogger(Level.DEBUG));
+        chain.addChain(new EmailLogger(Level.NOTICE));
+        chain.addChain(new StderrLogger(Level.ERR));
+
+        const promises = [];
+        const q1: QueryLogger = new QueryLogger('Entering function y.', Level.DEBUG, 'P1');
+        const q2: QueryLogger = new QueryLogger('Step1 completed.', Level.NOTICE, 'P2');
+        const q3: QueryLogger = new QueryLogger('An error has occurred.', Level.ERR, 'P3');
+
+        promises.push(chain.process(q1));
+        promises.push(chain.process(q2));
+        promises.push(chain.process(q3));
+
+
+        return Promise.all(promises).then((res) => {
+            console.log('All promises end');
+            const promisesResult = _.chain(res).flatten(true).uniq().value();
+            Expect(true).toEqual(_.isEqual(['P1=>OK', 'P2=>OK', 'P3=>OK'], promisesResult));
+        });
     }
 
 }
