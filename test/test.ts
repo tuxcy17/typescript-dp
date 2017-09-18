@@ -13,6 +13,7 @@ import {
 } from '../src/ChainOfResponsability/ChainOfResponsability';
 import {Animal, AnimalFactory, AnimalType} from '../src/Factory/Factory';
 import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactoryImpl';
+import {Car, CarBuilder} from '../src/Builder/Builder';
 // import moment = require('moment');
 
 @TestFixture('Design Pattern')
@@ -91,6 +92,19 @@ export class DesignPatternTest {
         const guiFactory: GuiFactory = GuiFactory.getFactory(TypeOS.OSX);
         const button: Button = guiFactory.createButton();
         Expect(true).toEqual(guiFactory.constructor.name === 'OSXFactory');
+    }
+
+    @TestCase()
+    @Test('#Builder')
+    public builderTest() {
+        const carBuilder: CarBuilder = new CarBuilder();
+        carBuilder.setSeaters(2);
+        carBuilder.setSportCar();
+        carBuilder.setTripComputer();
+        carBuilder.unsetGPS();
+
+        const car: Car = carBuilder.getResult();
+        Expect(car).toEqual("A sport car with 2 seaters with a trip computer.");
     }
 
     @TestCase()
