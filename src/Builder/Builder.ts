@@ -1,66 +1,68 @@
-enum TypeCar {
-    SPORT,
-    CITY,
-    BREAK
-}
+class User {
+    protected firstName: string;
+    protected age: number;
+    protected phone: string;
+    protected lastName: string;
+    protected address: string;
 
-class Car {
-    private description: string;
-
-    constructor(aDescription: string) {
-        this.description = aDescription;
+    protected constructor(builder?: UserBuilder) {
+        this.firstName = builder && builder.firstName;
+        this.lastName = builder && builder.lastName;
+        this.age = builder && builder.age;
+        this.phone = builder && builder.phone;
+        this.address = builder && builder.address;
     }
 
-    public toString(): string {
-        return this.description;
-    }
-}
-
-class CarBuilder {
-    private carType: TypeCar;
-    private hasTripComputer: boolean;
-    private hasGPS: boolean;
-    private seaterNumber: number;
-
-    public getResult(): Car {
-        return new Car((this.carType === TypeCar.CITY) ? 'A city car' : ((this.carType === TypeCar.SPORT) ? 'A sport car' : 'A cabriolet')
-            + ' with ' + this.seaterNumber + ' seaters'
-            + (this.hasTripComputer ? ' with a trip computer' : '')
-            + (this.hasGPS ? ' with a GPS' : '')
-            + '.');
+    public getFirstName(): string {
+        return this.firstName;
     }
 
-    public setSeaters(number: number): void {
-        this.seaterNumber = number;
+    public getLastName(): string {
+        return this.lastName;
     }
 
-    public setCityCar(): void {
-        this.carType = TypeCar.CITY;
+    public getAge(): number {
+        return this.age;
     }
 
-    public setBreak(): void {
-        this.carType = TypeCar.BREAK;
+    public getPhone(): string {
+        return this.phone;
     }
 
-    public setSportCar(): void {
-        this.carType = TypeCar.SPORT;
+    public getAddress(): string {
+        return this.address;
     }
 
-    public setTripComputer(): void {
-        this.hasTripComputer = true;
-    }
-
-    public unsetTripComputer(): void {
-        this.hasTripComputer = false;
-    }
-
-    public setGPS(): void {
-        this.hasGPS = true;
-    }
-
-    public unsetGPS(): void {
-        this.hasGPS = false;
+    public getDescription(): string {
+        return `${this.age} ${this.firstName} ${this.lastName} ${this.phone} ${this.address}`;
     }
 }
 
-export {Car, CarBuilder};
+class UserBuilder extends User {
+    constructor(firstName: string, lastName: string) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public setAge(age: number): UserBuilder {
+        this.age = age;
+        return this;
+    }
+
+    public setPhone(phone: string): UserBuilder {
+        this.phone = phone;
+        return this;
+    }
+
+    public setAddress(address: string): UserBuilder {
+        this.address = address;
+        return this;
+    }
+
+    public build(): User {
+        return new User(this);
+    }
+}
+
+export {User, UserBuilder}

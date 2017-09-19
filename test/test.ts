@@ -13,7 +13,7 @@ import {
 } from '../src/ChainOfResponsability/ChainOfResponsability';
 import {Animal, AnimalFactory, AnimalType} from '../src/Factory/Factory';
 import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactoryImpl';
-import {Car, CarBuilder} from '../src/Builder/Builder';
+import {User, UserBuilder} from '../src/Builder/Builder';
 // import moment = require('moment');
 
 @TestFixture('Design Pattern')
@@ -59,7 +59,7 @@ export class DesignPatternTest {
 
 
     @Test('#Decorator')
-    public decoratorTest () {
+    public decoratorTest() {
         const shapes: Array<Shape> = [];
         shapes.push(new CircleShape(1, 2, 3, new DrawingAPI1()));
         shapes.push(new CircleShape(5, 7, 11, new DrawingAPI2()));
@@ -97,14 +97,13 @@ export class DesignPatternTest {
     @TestCase()
     @Test('#Builder')
     public builderTest() {
-        const carBuilder: CarBuilder = new CarBuilder();
-        carBuilder.setSeaters(2);
-        carBuilder.setSportCar();
-        carBuilder.setTripComputer();
-        carBuilder.unsetGPS();
+        const userBuilder: UserBuilder = new UserBuilder('Cyril', 'RICHARD')
+            .setAddress('somewhere')
+            .setAge(12)
+            .setPhone('12345');
+        const user: User = userBuilder.build();
 
-        const car: Car = carBuilder.getResult();
-        Expect(car).toEqual("A sport car with 2 seaters with a trip computer.");
+        Expect(user.getDescription()).toEqual(`${12} ${'Cyril'} ${'RICHARD'} ${'12345'} ${'somewhere'}`);
     }
 
     @TestCase()
