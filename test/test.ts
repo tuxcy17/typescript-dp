@@ -14,7 +14,7 @@ import {
 import {Animal, AnimalFactory, AnimalType} from '../src/Factory/Factory';
 import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactoryImpl';
 import {User, UserBuilder} from '../src/Builder/Builder';
-// import moment = require('moment');
+import {StateContext} from '../src/State/State';
 
 @TestFixture('Design Pattern')
 export class DesignPatternTest {
@@ -107,6 +107,22 @@ export class DesignPatternTest {
     }
 
     @TestCase()
+    @Test('#State00')
+    public stateTest() {
+        const res = [];
+        const SC: StateContext = new StateContext();
+        res.push(SC.writeName("Monday"));
+        res.push(SC.writeName("Tuesday"));
+        res.push(SC.writeName("Wednesday"));
+        res.push(SC.writeName("Thursday"));
+        res.push(SC.writeName("Friday"));
+        res.push(SC.writeName("Saturday"));
+        res.push(SC.writeName("Sunday"));
+
+        Expect(res).toEqual(['monday', 'TUESDAY', 'wednesday', 'THURSDAY', 'friday', 'SATURDAY', 'sunday']);
+    }
+
+    @TestCase()
     @AsyncTest('#chainOfResponsability ? Async chain of responsability with returning state for eache promise')
     public chainOfResponsabilityTest() {
         const chain: ChainLogger<QueryLogger> = new ChainLogger<QueryLogger>();
@@ -131,5 +147,4 @@ export class DesignPatternTest {
             Expect(true).toEqual(_.isEqual(['P1=>OK', 'P2=>OK', 'P3=>OK'], promisesResult));
         });
     }
-
 }
