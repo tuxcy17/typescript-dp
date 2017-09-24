@@ -15,6 +15,8 @@ import {Animal, AnimalFactory, AnimalType} from '../src/Factory/Factory';
 import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactoryImpl';
 import {User, UserBuilder} from '../src/Builder/Builder';
 import {StateContext} from '../src/State/State';
+import {Add, Context, Multiply, Subtract} from '../src/Strategy/Strategy';
+
 
 @TestFixture('Design Pattern')
 export class DesignPatternTest {
@@ -146,5 +148,14 @@ export class DesignPatternTest {
             const promisesResult = _.chain(res).flatten(true).uniq().value();
             Expect(true).toEqual(_.isEqual(['P1=>OK', 'P2=>OK', 'P3=>OK'], promisesResult));
         });
+    }
+
+    @TestCase(3, 4)
+    @Test("#Strategy")
+    public strategyTest (a: number, b: number) {
+        let context: Context = new Context(new Add());
+        const resultA: number = context.executeStrategy(a, b);
+
+        Expect(resultA).toEqual(a + b);
     }
 }
