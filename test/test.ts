@@ -16,6 +16,7 @@ import {Button, GuiFactory, TypeOS} from '../src/AbstractFactory/AbstractFactory
 import {User, UserBuilder} from '../src/Builder/Builder';
 import {StateContext} from '../src/State/State';
 import {Add, Context, Multiply, Subtract} from '../src/Strategy/Strategy';
+import {Car, CarElement, CarElementPrintVisitor} from '../src/Visitor/Visitor';
 
 
 @TestFixture('Design Pattern')
@@ -157,5 +158,14 @@ export class DesignPatternTest {
         const resultA: number = context.executeStrategy(a, b);
 
         Expect(resultA).toEqual(a + b);
+    }
+
+    @TestCase(3, 4)
+    @Test("#Visitor")
+    public visitorTest (a: number, b: number) {
+        const car: CarElement = new Car();
+
+        const result: string = car.accept(new CarElementPrintVisitor());
+        Expect(result).toEqual("CAR");
     }
 }
